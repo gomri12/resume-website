@@ -75,7 +75,7 @@ This project is private and not licensed for public use.
 
 ## 👤 Author
 
-[Your Name]
+Omri Glam
 
 ---
 
