@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import './App.css';
 import HackingGame from './components/HackingGame';
 import Navigation from './components/layout/Navigation';
+import { content } from './content';
 
 // Styled components for animated background
 const AnimatedBackground = styled(motion.div)`
@@ -583,41 +584,41 @@ function App() {
               whileHover={{ scale: 1.05 }}
             >
               <img 
-                src="/images/profile.jpg" 
-                alt="Omri Glam"
+                src={content.personal.profileImage}
+                alt={content.personal.name}
                 onError={(e) => {
                   e.currentTarget.src = 'https://via.placeholder.com/200x200?text=OG';
                 }}
               />
             </ProfileImage>
             <ProfileInfo variants={staggerContainer} initial="initial" animate="animate">
-              <Title variants={fadeInUp}>Omri Glam</Title>
-              <Subtitle variants={fadeInUp}>Engineering Group Manager</Subtitle>
+              <Title variants={fadeInUp}>{content.personal.name}</Title>
+              <Subtitle variants={fadeInUp}>{content.personal.title}</Subtitle>
               <ContactGrid variants={staggerContainer} initial="initial" animate="animate">
                 <ContactItem variants={fadeInUp}>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
                   </svg>
-                  <a href="mailto:gomri12@gmail.com">gomri12@gmail.com</a>
+                  <a href={`mailto:${content.contact.email}`}>{content.contact.email}</a>
                 </ContactItem>
                 <ContactItem variants={fadeInUp}>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
                   </svg>
-                  <a href="tel:+972503323352">050-3323352</a>
+                  <a href={`tel:${content.contact.phone}`}>{content.contact.phone}</a>
                 </ContactItem>
                 <ContactItem variants={fadeInUp}>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                   </svg>
-                  <span>Tel Aviv, Israel</span>
+                  <span>{content.contact.location}</span>
                 </ContactItem>
                 <ContactItem variants={fadeInUp}>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
                   </svg>
-                  <a href="https://linkedin.com/in/omri-glam" target="_blank" rel="noopener noreferrer">
-                    linkedin.com/in/omri-glam
+                  <a href={`https://${content.contact.linkedin}`} target="_blank" rel="noopener noreferrer">
+                    {content.contact.linkedin}
                   </a>
                 </ContactItem>
               </ContactGrid>
@@ -626,18 +627,31 @@ function App() {
         </Header>
 
         <Section 
+          id="about" 
+          variants={fadeInUp} 
+          initial="initial" 
+          animate="animate"
+        >
+          <SectionTitle variants={fadeInUp}>{content.about.title}</SectionTitle>
+          {content.about.paragraphs.map((paragraph, index) => (
+            <motion.p 
+              key={index} 
+              variants={fadeInUp}
+              style={{ marginTop: index > 0 ? '1rem' : 0 }}
+            >
+              {paragraph}
+            </motion.p>
+          ))}
+        </Section>
+
+        <Section 
           id="profile" 
           variants={fadeInUp} 
           initial="initial" 
           animate="animate"
         >
-          <SectionTitle variants={fadeInUp}>Profile</SectionTitle>
-          <motion.p variants={fadeInUp}>
-            Engineering Group Manager with 10+ years of experience in cloud infrastructure, cybersecurity, and backend product development. 
-            Proven success in leading cross-functional teams to build scalable, secure, and high-performing systems across multi-cloud 
-            environments (GCP, AWS, Azure). Passionate about learning, translating complex technical goals into tangible outcomes, 
-            mentoring leaders, and driving product strategy. I would like to bring these skills and experiences to bring the best security solutions.
-          </motion.p>
+          <SectionTitle variants={fadeInUp}>{content.profile.title}</SectionTitle>
+          <motion.p variants={fadeInUp}>{content.profile.content}</motion.p>
         </Section>
 
         <Section 
@@ -646,45 +660,22 @@ function App() {
           initial="initial" 
           animate="animate"
         >
-          <SectionTitle variants={fadeInUp}>Work Experience</SectionTitle>
+          <SectionTitle variants={fadeInUp}>{content.experience.title}</SectionTitle>
           <ExperienceTimeline variants={staggerContainer} initial="initial" animate="animate">
-            <ExperienceItem variants={fadeInUp}>
-              <h3>Group Manager – Quantum Spark</h3>
-              <div className="company">Check Point Software Technologies</div>
-              <div className="date">Jul 2022 - Present</div>
-              <ul>
-                <li>Led an engineering organization of 30 (across four teams) delivering cloud security with network security appliance, driving product line annual revenue growth from $60M to $100M within 2 years.</li>
-                <li>Spearheaded a backend redesign to a Go-based microservices architecture on Kubernetes, achieving substantial improvements in scalability and reliability to support millions of concurrent user sessions.</li>
-                <li>Delivered FIPS-compliant, secure VPN features across the cloud product suite, resulting in a 30% month-over-month increase in platform usage by enterprise customers.</li>
-                <li>Championed collaboration with IoT and SD-WAN teams to integrate network security capabilities into new offerings, expanding the platform's market reach and customer value.</li>
-                <li>Steered product roadmap planning and represented Engineering in executive forums, aligning technical initiatives with overarching business goals.</li>
-              </ul>
-            </ExperienceItem>
-
-            <ExperienceItem variants={fadeInUp}>
-              <h3>Engineering Manager – Cloud Security</h3>
-              <div className="company">Check Point Software Technologies</div>
-              <div className="date">Jan 2020 – Jul 2022</div>
-              <ul>
-                <li>Managed 2 teams and their respective team leads (total 15 engineers) to deliver scalable and secure cloud-native services.</li>
-                <li>Led development of high-scale backend microservices in Go and C#, deployed across AWS, Azure, and GCP.</li>
-                <li>Drove architectural efforts focused on high availability using AWS Fargate, Lambda functions, and Linux-based auto-scaling containers.</li>
-                <li>Built and maintained resilient distributed systems to support mission-critical cloud workloads.</li>
-                <li>Designed and optimized data pipelines and observability tools using BigQuery and Elasticsearch.</li>
-              </ul>
-            </ExperienceItem>
-
-            <ExperienceItem variants={fadeInUp}>
-              <h3>Senior Team Leader</h3>
-              <div className="company">Safe-T Data</div>
-              <div className="date">Feb 2018 - Jan 2020</div>
-            </ExperienceItem>
-
-            <ExperienceItem variants={fadeInUp}>
-              <h3>Team Leader and Developer</h3>
-              <div className="company">CyKick Labs</div>
-              <div className="date">Jun 2016 – Feb 2018</div>
-            </ExperienceItem>
+            {content.experience.items.map((item, index) => (
+              <ExperienceItem key={index} variants={fadeInUp}>
+                <h3>{item.title}</h3>
+                <div className="company">{item.company}</div>
+                <div className="date">{item.date}</div>
+                {item.achievements && (
+                  <ul>
+                    {item.achievements.map((achievement, i) => (
+                      <li key={i}>{achievement}</li>
+                    ))}
+                  </ul>
+                )}
+              </ExperienceItem>
+            ))}
           </ExperienceTimeline>
         </Section>
 
@@ -694,108 +685,58 @@ function App() {
           initial="initial" 
           animate="animate"
         >
-          <SectionTitle variants={fadeInUp}>Skills</SectionTitle>
+          <SectionTitle variants={fadeInUp}>{content.skills.title}</SectionTitle>
           <SkillsGrid variants={staggerContainer} initial="initial" animate="animate">
-            <SkillsCategory variants={fadeInUp}>
-              <h4>Languages</h4>
-              <ul>
-                <li>Go</li>
-                <li>C#</li>
-                <li>C++</li>
-                <li>Lua</li>
-                <li>Python</li>
-                <li>Bash</li>
-              </ul>
-            </SkillsCategory>
-
-            <SkillsCategory variants={fadeInUp}>
-              <h4>Cloud & Infrastructure</h4>
-              <ul>
-                <li>GCP</li>
-                <li>AWS</li>
-                <li>Azure</li>
-                <li>Kubernetes</li>
-                <li>Docker</li>
-                <li>Serverless</li>
-              </ul>
-            </SkillsCategory>
-
-            <SkillsCategory variants={fadeInUp}>
-              <h4>Architecture</h4>
-              <ul>
-                <li>Microservices</li>
-                <li>Distributed Systems</li>
-                <li>High-Scale Backend APIs</li>
-              </ul>
-            </SkillsCategory>
-
-            <SkillsCategory variants={fadeInUp}>
-              <h4>Security</h4>
-              <ul>
-                <li>Cloud Security</li>
-                <li>OS Hardening</li>
-                <li>Reverse Proxy</li>
-                <li>FIPS</li>
-                <li>VPN</li>
-              </ul>
-            </SkillsCategory>
-
-            <SkillsCategory variants={fadeInUp}>
-              <h4>Data & Observability</h4>
-              <ul>
-                <li>BigQuery</li>
-                <li>Elasticsearch</li>
-                <li>Redis</li>
-                <li>MongoDB</li>
-                <li>Postgres</li>
-              </ul>
-            </SkillsCategory>
-
-            <SkillsCategory variants={fadeInUp}>
-              <h4>Leadership</h4>
-              <ul>
-                <li>Agile</li>
-                <li>Roadmap Ownership</li>
-                <li>Team Building</li>
-                <li>Strategic Planning</li>
-              </ul>
-            </SkillsCategory>
+            {content.skills.categories.map((category, index) => (
+              <SkillsCategory key={index} variants={fadeInUp}>
+                <h4>{category.title}</h4>
+                <ul>
+                  {category.items.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </SkillsCategory>
+            ))}
           </SkillsGrid>
         </Section>
 
-        <Section id="languages" variants={fadeInUp} initial="initial" animate="animate">
-          <SectionTitle variants={fadeInUp}>Languages</SectionTitle>
+        <Section 
+          id="languages" 
+          variants={fadeInUp} 
+          initial="initial" 
+          animate="animate"
+        >
+          <SectionTitle variants={fadeInUp}>{content.languages.title}</SectionTitle>
           <LanguagesList variants={staggerContainer} initial="initial" animate="animate">
-            <motion.div variants={fadeInUp}>
-              <strong>English</strong>
-              <span>(Fluent)</span>
-            </motion.div>
-            <motion.div variants={fadeInUp}>
-              <strong>Hebrew</strong>
-              <span>(Fluent)</span>
-            </motion.div>
+            {content.languages.items.map((item, index) => (
+              <motion.div key={index} variants={fadeInUp}>
+                <strong>{item.name}</strong>
+                <span>({item.level})</span>
+              </motion.div>
+            ))}
           </LanguagesList>
         </Section>
 
-        <Section id="education" variants={fadeInUp} initial="initial" animate="animate">
-          <SectionTitle variants={fadeInUp}>Education</SectionTitle>
+        <Section 
+          id="education" 
+          variants={fadeInUp} 
+          initial="initial" 
+          animate="animate"
+        >
+          <SectionTitle variants={fadeInUp}>{content.education.title}</SectionTitle>
           <ExperienceTimeline variants={staggerContainer} initial="initial" animate="animate">
-            <ExperienceItem variants={fadeInUp}>
-              <h3>Executive Master of Business Administration</h3>
-              <div className="company">Business Administration | Bar-Ilan University</div>
-              <div className="date">2024-2025</div>
-            </ExperienceItem>
-
-            <ExperienceItem variants={fadeInUp}>
-              <h3>B.Sc. Computer Software Engineering</h3>
-              <div className="company">College of Engineering | Afeka College</div>
-              <div className="date">2012-2016</div>
-            </ExperienceItem>
+            {content.education.items.map((item, index) => (
+              <ExperienceItem key={index} variants={fadeInUp}>
+                <h3>{item.degree}</h3>
+                <div className="company">{item.institution}</div>
+                <div className="date">{item.date}</div>
+              </ExperienceItem>
+            ))}
           </ExperienceTimeline>
         </Section>
 
         <Footer variants={fadeInUp} initial="initial" animate="animate">
-          <p>&copy; {new Date().getFullYear()} Omri Glam</p>
+          <p>&copy; {new Date().getFullYear()} {content.personal.name}</p>
         </Footer>
       </Container>
 

@@ -18,13 +18,16 @@ const NavContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  width: 100%;
 `;
 
 const NavLinks = styled.div`
   display: flex;
   gap: 2rem;
+  justify-content: center;
+  width: 100%;
   
   @media (max-width: 768px) {
     display: none;
@@ -36,12 +39,15 @@ const NavLink = styled(motion.a)`
   text-decoration: none;
   font-weight: 500;
   position: relative;
+  padding: 0.5rem 1rem;
+  text-align: center;
   
   &:after {
     content: '';
     position: absolute;
     bottom: -4px;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 0;
     height: 2px;
     background: var(--primary-color);
@@ -60,6 +66,8 @@ const MobileMenuButton = styled.button`
   font-size: 1.5rem;
   cursor: pointer;
   color: var(--text-primary);
+  position: absolute;
+  right: 2rem;
   
   @media (max-width: 768px) {
     display: block;
@@ -73,7 +81,7 @@ const MobileMenu = styled(motion.div)`
   left: 0;
   right: 0;
   bottom: 0;
-  background: white;
+  background: var(--background-light);
   z-index: 1001;
   padding: 2rem;
   
@@ -83,6 +91,7 @@ const MobileMenu = styled(motion.div)`
     align-items: center;
     justify-content: center;
     gap: 2rem;
+    text-align: center;
   }
 `;
 
@@ -118,15 +127,15 @@ const Navigation: React.FC = () => {
               About
             </NavLink>
             <NavLink
-              href="#experience"
+              href="#profile"
               onClick={(e) => {
                 e.preventDefault();
-                scrollToSection('experience');
+                scrollToSection('profile');
               }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Experience
+              Profile
             </NavLink>
             <NavLink
               href="#skills"
@@ -140,15 +149,26 @@ const Navigation: React.FC = () => {
               Skills
             </NavLink>
             <NavLink
-              href="#contact"
+              href="#languages"
               onClick={(e) => {
                 e.preventDefault();
-                scrollToSection('contact');
+                scrollToSection('languages');
               }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Contact
+              Languages
+            </NavLink>
+            <NavLink
+              href="#education"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('education');
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Education
             </NavLink>
           </NavLinks>
           <MobileMenuButton
@@ -180,15 +200,15 @@ const Navigation: React.FC = () => {
               About
             </NavLink>
             <NavLink
-              href="#experience"
+              href="#profile"
               onClick={(e) => {
                 e.preventDefault();
-                scrollToSection('experience');
+                scrollToSection('profile');
               }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Experience
+              Profile
             </NavLink>
             <NavLink
               href="#skills"
@@ -202,15 +222,26 @@ const Navigation: React.FC = () => {
               Skills
             </NavLink>
             <NavLink
-              href="#contact"
+              href="#languages"
               onClick={(e) => {
                 e.preventDefault();
-                scrollToSection('contact');
+                scrollToSection('languages');
               }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Contact
+              Languages
+            </NavLink>
+            <NavLink
+              href="#education"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('education');
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Education
             </NavLink>
           </MobileMenu>
         )}
