@@ -41,9 +41,9 @@ const Container = styled(motion.div)`
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-  min-height: 100vh;
   position: relative;
   z-index: 1;
+  margin-top: 80px;
 `;
 
 const Nav = styled(motion.nav)`
@@ -58,12 +58,19 @@ const Nav = styled(motion.nav)`
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 `;
 
-const NavContainer = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
+const NavContainer = styled.nav`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 1rem 2rem;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 `;
 
 const NavLinks = styled.div`
@@ -131,8 +138,8 @@ const MobileMenu = styled(motion.div)`
 `;
 
 const Header = styled(motion.header)`
-  text-align: left;
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
+  padding-top: 2rem;
   position: relative;
   display: flex;
   flex-direction: column;
