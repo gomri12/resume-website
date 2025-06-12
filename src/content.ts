@@ -109,6 +109,6 @@ export const content = {
   personal: {
     name: "Omri Glam",
     title: "Engineering Group Manager",
-    profileImage: "/images/profile1.png"
+    profileImage: "./images/profile1.png"
   }
 }; 
