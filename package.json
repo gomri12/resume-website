@@ -2,6 +2,7 @@
   "name": "resume-website",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://omriglam.github.io/resume-website",
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
@@ -19,6 +20,8 @@
     "web-vitals": "^5.0.2"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -46,6 +49,7 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
-    "@types/jest": "^29.5.14"
+    "@types/jest": "^29.5.14",
+    "gh-pages": "^6.3.0"
   }
 }
