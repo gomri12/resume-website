@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styled from '@emotion/styled';
+import { Link, useLocation } from 'react-router-dom';
 
 const Nav = styled(motion.nav)`
   position: fixed;
@@ -34,7 +35,7 @@ const NavLinks = styled.div`
   }
 `;
 
-const NavLink = styled(motion.a)`
+const NavLink = styled(Link)`
   color: var(--text-primary);
   text-decoration: none;
   font-weight: 500;
@@ -95,8 +96,11 @@ const MobileMenu = styled(motion.div)`
   }
 `;
 
+const MotionLink = motion(Link);
+
 const Navigation: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -115,61 +119,66 @@ const Navigation: React.FC = () => {
       >
         <NavContainer>
           <NavLinks>
-            <NavLink
-              href="#about"
+            <MotionLink
+              to="/#about"
               onClick={(e) => {
                 e.preventDefault();
                 scrollToSection('about');
               }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              style={{ textDecoration: 'none', color: 'var(--text-primary)' }}
             >
               About
-            </NavLink>
-            <NavLink
-              href="#profile"
+            </MotionLink>
+            <MotionLink
+              to="/#profile"
               onClick={(e) => {
                 e.preventDefault();
                 scrollToSection('profile');
               }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              style={{ textDecoration: 'none', color: 'var(--text-primary)' }}
             >
               Profile
-            </NavLink>
-            <NavLink
-              href="#skills"
+            </MotionLink>
+            <MotionLink
+              to="/#skills"
               onClick={(e) => {
                 e.preventDefault();
                 scrollToSection('skills');
               }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              style={{ textDecoration: 'none', color: 'var(--text-primary)' }}
             >
               Skills
-            </NavLink>
-            <NavLink
-              href="#languages"
+            </MotionLink>
+            <MotionLink
+              to="/#languages"
               onClick={(e) => {
                 e.preventDefault();
                 scrollToSection('languages');
               }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              style={{ textDecoration: 'none', color: 'var(--text-primary)' }}
             >
               Languages
-            </NavLink>
-            <NavLink
-              href="#education"
+            </MotionLink>
+            <MotionLink
+              to="/#education"
               onClick={(e) => {
                 e.preventDefault();
                 scrollToSection('education');
               }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              style={{ textDecoration: 'none', color: 'var(--text-primary)' }}
             >
               Education
-            </NavLink>
+            </MotionLink>
           </NavLinks>
           <MobileMenuButton
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -188,61 +197,66 @@ const Navigation: React.FC = () => {
             exit={{ opacity: 0, x: '100%' }}
             transition={{ duration: 0.3 }}
           >
-            <NavLink
-              href="#about"
+            <MotionLink
+              to="/#about"
               onClick={(e) => {
                 e.preventDefault();
                 scrollToSection('about');
               }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              style={{ textDecoration: 'none', color: 'var(--text-primary)' }}
             >
               About
-            </NavLink>
-            <NavLink
-              href="#profile"
+            </MotionLink>
+            <MotionLink
+              to="/#profile"
               onClick={(e) => {
                 e.preventDefault();
                 scrollToSection('profile');
               }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              style={{ textDecoration: 'none', color: 'var(--text-primary)' }}
             >
               Profile
-            </NavLink>
-            <NavLink
-              href="#skills"
+            </MotionLink>
+            <MotionLink
+              to="/#skills"
               onClick={(e) => {
                 e.preventDefault();
                 scrollToSection('skills');
               }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              style={{ textDecoration: 'none', color: 'var(--text-primary)' }}
             >
               Skills
-            </NavLink>
-            <NavLink
-              href="#languages"
+            </MotionLink>
+            <MotionLink
+              to="/#languages"
               onClick={(e) => {
                 e.preventDefault();
                 scrollToSection('languages');
               }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              style={{ textDecoration: 'none', color: 'var(--text-primary)' }}
             >
               Languages
-            </NavLink>
-            <NavLink
-              href="#education"
+            </MotionLink>
+            <MotionLink
+              to="/#education"
               onClick={(e) => {
                 e.preventDefault();
                 scrollToSection('education');
               }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              style={{ textDecoration: 'none', color: 'var(--text-primary)' }}
             >
               Education
-            </NavLink>
+            </MotionLink>
           </MobileMenu>
         )}
       </AnimatePresence>
