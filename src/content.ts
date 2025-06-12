@@ -8,7 +8,7 @@ export const content = {
   },
   profile: {
     title: "Profile",
-    content: "Engineering Group Manager with 10+ years of experience in cloud infrastructure, cybersecurity, and backend product development. Proven success in leading cross-functional teams to build scalable, secure, and high-performing systems across multi-cloud environments (GCP, AWS, Azure). Passionate about learning, translating complex technical goals into tangible outcomes, mentoring leaders, and driving product strategy. I would like to bring these skills and experiences to bring the best security solutions."
+    content: "Engineering Group Manager with 10+ years of experience in cloud infrastructure, cybersecurity, and backend product development. Proven success in leading cross-functional teams to build scalable, secure, and high-performing systems across multi-cloud environments (GCP, AWS, Azure). Passionate about learning, translating complex technical goals into tangible outcomes, mentoring leaders, and driving product strategy. I’m eager to leverage my skills and experience to deliver world-class security solutions."
   },
   experience: {
     title: "Work Experience",
