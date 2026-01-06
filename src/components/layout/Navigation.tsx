@@ -8,11 +8,14 @@ const Nav = styled(motion.nav)`
   top: 0;
   left: 0;
   right: 0;
-  background: var(--background-light);
-  backdrop-filter: blur(10px);
+  background: rgba(10, 14, 39, 0.8);
+  backdrop-filter: blur(20px);
   z-index: 1000;
-  padding: 1rem 2rem;
-  box-shadow: 0 2px 10px var(--shadow-color);
+  padding: 1.25rem 2rem;
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 `;
 
 const NavContainer = styled.div`
@@ -36,14 +39,21 @@ const NavLinks = styled.div`
 `;
 
 const NavLink = styled(Link)`
-  color: var(--text-primary);
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
   font-weight: 500;
   position: relative;
   padding: 0.5rem 1rem;
   text-align: center;
+  transition: all 0.3s ease;
+  border-radius: 8px;
   
-  &:after {
+  &:hover {
+    color: rgba(255, 255, 255, 1);
+    background: rgba(255, 255, 255, 0.05);
+  }
+  
+  &::after {
     content: '';
     position: absolute;
     bottom: -4px;
@@ -51,12 +61,16 @@ const NavLink = styled(Link)`
     transform: translateX(-50%);
     width: 0;
     height: 2px;
-    background: var(--primary-color);
+    background: linear-gradient(90deg, 
+      rgba(66, 153, 225, 0.9),
+      rgba(139, 92, 246, 0.9));
+    border-radius: 2px;
     transition: width 0.3s ease;
+    box-shadow: 0 2px 8px rgba(66, 153, 225, 0.4);
   }
   
-  &:hover:after {
-    width: 100%;
+  &:hover::after {
+    width: 80%;
   }
 `;
 
@@ -82,9 +96,11 @@ const MobileMenu = styled(motion.div)`
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--background-light);
+  background: rgba(10, 14, 39, 0.98);
+  backdrop-filter: blur(20px);
   z-index: 1001;
   padding: 2rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
   
   @media (max-width: 768px) {
     display: flex;

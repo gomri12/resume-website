@@ -2,13 +2,13 @@ export const content = {
   about: {
     title: "About Me",
     paragraphs: [
-      "I am a passionate Engineering Group Manager with over a decade of experience in cloud infrastructure, cybersecurity, and backend product development. My journey in technology has been driven by a deep interest in building secure, scalable systems and leading high-performing engineering teams.",
+      "I am a passionate Group Manager with over a decade of experience in cloud infrastructure, cybersecurity, and backend product development. My journey in technology has been driven by a deep interest in building secure, scalable systems and leading high-performing engineering teams.",
       "Throughout my career, I've focused on delivering innovative solutions that combine technical excellence with business value. I specialize in cloud security, distributed systems, and leading cross-functional teams to build products that make a real impact."
     ]
   },
   profile: {
     title: "Profile",
-    content: "Engineering Group Manager with 10+ years of experience in cloud infrastructure, cybersecurity, and backend product development. Proven success in leading cross-functional teams to build scalable, secure, and high-performing systems across multi-cloud environments (GCP, AWS, Azure). Passionate about learning, translating complex technical goals into tangible outcomes, mentoring leaders, and driving product strategy. I’m eager to leverage my skills and experience to deliver world-class security solutions."
+    content: "Group Manager with 10+ years of experience in cloud infrastructure, cybersecurity, and backend product development. Proven success in leading cross-functional teams to build scalable, secure, and high-performing systems across multi-cloud environments (GCP, AWS, Azure). Passionate about learning, translating complex technical goals into tangible outcomes, mentoring leaders, and driving product strategy. I’m eager to leverage my skills and experience to deliver world-class security solutions."
   },
   experience: {
     title: "Work Experience",
@@ -108,7 +108,7 @@ export const content = {
   },
   personal: {
     name: "Omri Glam",
-    title: "Engineering Group Manager",
-    profileImage: "images/profile1.png"
+    title: "Group Manager (Director)",
+    profileImage: "images/profile.jpg"
   }
 }; 

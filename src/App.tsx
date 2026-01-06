@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import styled from '@emotion/styled';
 import './App.css';
 import HackingGame from './components/HackingGame';
@@ -14,27 +14,63 @@ const AnimatedBackground = styled(motion.div)`
   right: 0;
   bottom: 0;
   z-index: -1;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 25%, #2d1b3d 50%, #1a1f3a 75%, #0a0e27 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
   overflow: hidden;
+  
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      radial-gradient(circle at 20% 50%, rgba(66, 153, 225, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 40% 20%, rgba(236, 72, 153, 0.05) 0%, transparent 50%);
+    animation: pulse 8s ease-in-out infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+  }
 `;
 
 const Star = styled(motion.div)`
   position: absolute;
-  width: 2px;
-  height: 2px;
+  width: 3px;
+  height: 3px;
   background: white;
   border-radius: 50%;
-  box-shadow: 0 0 4px white;
+  box-shadow: 
+    0 0 6px rgba(255, 255, 255, 0.8),
+    0 0 12px rgba(66, 153, 225, 0.6),
+    0 0 18px rgba(139, 92, 246, 0.4);
 `;
 
 const ShootingStar = styled(motion.div)`
   position: absolute;
-  width: 100px;
+  width: 150px;
   height: 2px;
-  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
+  background: linear-gradient(90deg, 
+    rgba(255,255,255,0) 0%, 
+    rgba(255,255,255,1) 30%,
+    rgba(66, 153, 225, 1) 50%,
+    rgba(255,255,255,0) 100%);
   transform-origin: left center;
-  filter: blur(1px);
-  box-shadow: 0 0 10px white;
+  filter: blur(1.5px);
+  box-shadow: 
+    0 0 10px rgba(255, 255, 255, 0.8),
+    0 0 20px rgba(66, 153, 225, 0.6);
 `;
 
 const Container = styled(motion.div)`
@@ -151,49 +187,90 @@ const ProfileSection = styled(motion.div)`
   grid-template-columns: auto 1fr;
   gap: 3rem;
   align-items: start;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 2rem;
-  border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    text-align: center;
-    gap: 2rem;
-  }
-`;
-
-const ProfileImage = styled(motion.div)`
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 4px solid #fff;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+  padding: 3rem;
+  border-radius: 24px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   position: relative;
+  overflow: hidden;
   
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-  }
-  
-  &:hover img {
-    transform: scale(1.05);
-  }
-  
-  &:after {
+  &::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
+    height: 2px;
+    background: linear-gradient(90deg, 
+      rgba(66, 153, 225, 0.8),
+      rgba(139, 92, 246, 0.8),
+      rgba(236, 72, 153, 0.8));
+    background-size: 200% 100%;
+    animation: shimmer 3s ease infinite;
+  }
+  
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 2rem;
+    padding: 2rem;
+  }
+`;
+
+const ProfileImage = styled(motion.div)`
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  overflow: visible;
+  position: relative;
+  margin: 0 auto;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
     border-radius: 50%;
-    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 4px;
+    background: linear-gradient(135deg, 
+      rgba(66, 153, 225, 0.8),
+      rgba(139, 92, 246, 0.8),
+      rgba(236, 72, 153, 0.8),
+      rgba(66, 153, 225, 0.8));
+    background-size: 300% 300%;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: rotate 4s linear infinite;
+  }
+  
+  @keyframes rotate {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+  }
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+      0 10px 40px rgba(0, 0, 0, 0.3),
+      inset 0 0 20px rgba(255, 255, 255, 0.1);
+  }
+  
+  &:hover img {
+    transform: scale(1.08) rotate(2deg);
   }
 `;
 
@@ -204,41 +281,90 @@ const ProfileInfo = styled(motion.div)`
 `;
 
 const Section = styled(motion.section)`
-  background: rgba(255, 255, 255, 0.95);
-  padding: 2rem;
-  border-radius: 15px;
-  margin-bottom: 2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  padding: 3rem;
+  border-radius: 24px;
+  margin-bottom: 3rem;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   position: relative;
   overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   
-  &:before {
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 
+      0 12px 40px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+  
+  &::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
-    opacity: 0.5;
+    height: 3px;
+    background: linear-gradient(90deg, 
+      rgba(66, 153, 225, 0.8),
+      rgba(139, 92, 246, 0.8),
+      rgba(236, 72, 153, 0.8));
+    background-size: 200% 100%;
+    animation: shimmer 3s ease infinite;
+  }
+  
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  
+  @media (max-width: 768px) {
+    padding: 2rem;
+    margin-bottom: 2rem;
   }
 `;
 
 const Title = styled(motion.h1)`
-  font-size: 2.5rem;
-  color: #2d3748;
+  font-size: 3rem;
+  font-weight: 700;
   margin: 0;
-  background: linear-gradient(120deg, #2d3748, #4a5568);
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(255, 255, 255, 0.85) 30%,
+    rgba(66, 153, 225, 0.9) 60%,
+    rgba(139, 92, 246, 0.9) 100%);
+  background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  animation: gradientShift 5s ease infinite;
+  
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
 `;
 
 const Subtitle = styled(motion.h2)`
   font-size: 1.5rem;
-  color: #4a5568;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
   margin: 0.5rem 0;
+  letter-spacing: 0.01em;
+  
+  @media (max-width: 768px) {
+    font-size: 1.25rem;
+  }
 `;
 
 const ContactGrid = styled(motion.div)`
@@ -253,26 +379,49 @@ const ContactGrid = styled(motion.div)`
 const ContactItem = styled(motion.div)`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  color: var(--text-secondary);
+  gap: 0.75rem;
+  color: rgba(255, 255, 255, 0.75);
+  padding: 0.75rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(66, 153, 225, 0.3);
+    transform: translateY(-2px);
+  }
   
   a {
-    color: var(--primary-color);
+    color: rgba(66, 153, 225, 0.9);
     text-decoration: none;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    transition: color 0.3s ease;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+    font-weight: 500;
     
     &:hover {
-      color: var(--primary-dark);
+      color: rgba(66, 153, 225, 1);
+      transform: translateX(2px);
     }
   }
   
   svg {
-    width: 16px;
-    height: 16px;
-    color: var(--primary-color);
+    width: 20px;
+    height: 20px;
+    color: rgba(66, 153, 225, 0.8);
+    transition: all 0.3s ease;
+  }
+  
+  &:hover svg {
+    color: rgba(66, 153, 225, 1);
+    transform: scale(1.1);
+  }
+  
+  span {
+    color: rgba(255, 255, 255, 0.75);
   }
 `;
 
@@ -284,34 +433,97 @@ const SkillsGrid = styled(motion.div)`
 `;
 
 const SkillsCategory = styled(motion.div)`
-  background: rgba(255, 255, 255, 0.9);
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(5px);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+      transparent,
+      rgba(255, 255, 255, 0.05),
+      transparent);
+    transition: left 0.5s ease;
+  }
   
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 
+      0 8px 24px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 0 20px rgba(66, 153, 225, 0.2);
+    border-color: rgba(66, 153, 225, 0.3);
+  }
+  
+  &:hover::before {
+    left: 100%;
   }
   
   h4 {
-    color: var(--text-primary);
-    margin-bottom: 1rem;
-    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.95);
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.75rem;
     
-    &:before {
+    &::before {
       content: '';
       display: inline-block;
-      width: 4px;
-      height: 1rem;
-      background: var(--primary-color);
-      border-radius: 2px;
+      width: 5px;
+      height: 1.5rem;
+      background: linear-gradient(180deg, 
+        rgba(66, 153, 225, 0.9),
+        rgba(139, 92, 246, 0.9));
+      border-radius: 3px;
+      box-shadow: 0 2px 8px rgba(66, 153, 225, 0.4);
+    }
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    
+    li {
+      color: rgba(255, 255, 255, 0.75);
+      padding: 0.5rem 0;
+      padding-left: 1.5rem;
+      position: relative;
+      transition: all 0.3s ease;
+      
+      &::before {
+        content: '▹';
+        position: absolute;
+        left: 0;
+        color: rgba(66, 153, 225, 0.8);
+        font-size: 1.2rem;
+        transition: transform 0.3s ease;
+      }
+      
+      &:hover {
+        color: rgba(255, 255, 255, 0.95);
+        transform: translateX(4px);
+        
+        &::before {
+          transform: translateX(2px);
+          color: rgba(66, 153, 225, 1);
+        }
+      }
     }
   }
 `;
@@ -320,131 +532,243 @@ const ExperienceTimeline = styled(motion.div)`
   position: relative;
   padding-left: 2rem;
   
-  &:before {
+  &::before {
     content: '';
     position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
-    width: 2px;
-    background: var(--border-color);
+    width: 3px;
+    background: linear-gradient(180deg, 
+      rgba(66, 153, 225, 0.6),
+      rgba(139, 92, 246, 0.6),
+      rgba(236, 72, 153, 0.6));
+    background-size: 100% 200%;
+    animation: timelineFlow 3s ease infinite;
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(66, 153, 225, 0.3);
+  }
+  
+  @keyframes timelineFlow {
+    0% { background-position: 0% 0%; }
+    50% { background-position: 0% 100%; }
+    100% { background-position: 0% 0%; }
+  }
+  
+  @media (max-width: 768px) {
+    padding-left: 1rem;
+    
+    &::before {
+      width: 2px;
+    }
   }
 `;
 
 const ExperienceItem = styled(motion.div)`
-  background: rgba(255, 255, 255, 0.9);
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(5px);
-  margin-bottom: 1.5rem;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  margin-bottom: 2rem;
+  margin-left: 2rem;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 2rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, 
+      rgba(66, 153, 225, 0.9),
+      rgba(139, 92, 246, 0.9));
+    box-shadow: 
+      0 0 10px rgba(66, 153, 225, 0.6),
+      inset 0 0 10px rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+  }
   
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateX(8px) translateY(-4px);
+    box-shadow: 
+      0 8px 24px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 0 20px rgba(66, 153, 225, 0.2);
+    border-color: rgba(66, 153, 225, 0.3);
   }
   
   h3 {
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
-    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.95);
+    margin-bottom: 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
   }
   
   .company {
-    color: var(--primary-color);
+    color: rgba(66, 153, 225, 0.9);
     font-weight: 600;
-    margin-bottom: 0.25rem;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      color: rgba(66, 153, 225, 1);
+      transform: translateX(4px);
+    }
   }
   
   .date {
-    color: var(--text-tertiary);
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
   }
   
   .description {
-    color: var(--text-secondary);
+    color: rgba(255, 255, 255, 0.75);
     margin-bottom: 1rem;
+    line-height: 1.7;
   }
   
   ul {
     list-style: none;
-    padding-left: 1rem;
-    margin-top: 0.5rem;
+    padding: 0;
+    margin-top: 1rem;
     
     li {
       position: relative;
-      padding-left: 1.5rem;
-      margin-bottom: 0.5rem;
-      color: var(--text-secondary);
+      padding-left: 2rem;
+      margin-bottom: 0.75rem;
+      color: rgba(255, 255, 255, 0.75);
+      line-height: 1.7;
+      transition: all 0.3s ease;
       
-      &:before {
-        content: '→';
+      &::before {
+        content: '▸';
         position: absolute;
         left: 0;
-        color: var(--primary-color);
+        color: rgba(66, 153, 225, 0.8);
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
       }
+      
+      &:hover {
+        color: rgba(255, 255, 255, 0.95);
+        transform: translateX(4px);
+        
+        &::before {
+          transform: translateX(2px);
+          color: rgba(66, 153, 225, 1);
+        }
+      }
+    }
+  }
+  
+  @media (max-width: 768px) {
+    margin-left: 1rem;
+    padding: 1.5rem;
+    
+    &::before {
+      left: -1rem;
+      width: 10px;
+      height: 10px;
     }
   }
 `;
 
 const LanguagesList = styled(motion.div)`
   display: flex;
-  gap: 2rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
   margin-top: 1rem;
   
   div {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(66, 153, 225, 0.3);
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 4px 12px rgba(66, 153, 225, 0.2);
+    }
+    
+    strong {
+      color: rgba(255, 255, 255, 0.95);
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
     
     span {
-      color: var(--text-secondary);
-    }
-    
-    &:after {
-      content: '•';
-      color: var(--primary-color);
-      margin-left: 1rem;
-    }
-    
-    &:last-child:after {
-      display: none;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.95rem;
     }
   }
 `;
 
 const SectionTitle = styled(motion.h3)`
-  font-size: 1.75rem;
-  color: #2d3748;
-  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
+  margin-bottom: 2rem;
   position: relative;
-  padding-bottom: 0.5rem;
+  padding-bottom: 1rem;
+  letter-spacing: -0.01em;
   
-  &:after {
+  &::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 60px;
-    height: 3px;
-    background: linear-gradient(90deg, #4299e1, #63b3ed);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, 
+      rgba(66, 153, 225, 0.9),
+      rgba(139, 92, 246, 0.9));
     border-radius: 2px;
+    box-shadow: 0 2px 8px rgba(66, 153, 225, 0.4);
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
   }
 `;
 
 const Footer = styled(motion.footer)`
   text-align: center;
-  color: #718096;
-  margin-top: 3rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 4rem;
   padding-top: 2rem;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.95rem;
+  
+  p {
+    margin: 0;
+  }
 `;
 
 function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
   
   const [stars] = useState(generateStars());
   const [shootingStars] = useState(generateShootingStars());
@@ -506,17 +830,23 @@ function App() {
   };
 
   const fadeInUp = {
-    initial: { opacity: 0, y: 20 },
+    initial: { opacity: 0, y: 30 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.5 }
+    transition: { duration: 0.6, ease: [0.4, 0, 0.2, 1] }
   };
 
   const staggerContainer = {
     animate: {
       transition: {
-        staggerChildren: 0.1
+        staggerChildren: 0.15
       }
     }
+  };
+  
+  const scaleIn = {
+    initial: { opacity: 0, scale: 0.9 },
+    animate: { opacity: 1, scale: 1 },
+    transition: { duration: 0.5, ease: [0.4, 0, 0.2, 1] }
   };
 
   const scrollToSection = (id: string) => {
@@ -578,6 +908,7 @@ function App() {
       <Navigation />
 
       <Container
+        ref={containerRef}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -599,7 +930,9 @@ function App() {
               />
             </ProfileImage>
             <ProfileInfo variants={staggerContainer} initial="initial" animate="animate">
-              <Title variants={fadeInUp}>{content.personal.name}</Title>
+              <Title variants={fadeInUp}>
+                {content.personal.name}
+              </Title>
               <Subtitle variants={fadeInUp}>{content.personal.title}</Subtitle>
               <ContactGrid variants={staggerContainer} initial="initial" animate="animate">
                 <ContactItem variants={fadeInUp}>
@@ -637,14 +970,20 @@ function App() {
           id="about" 
           variants={fadeInUp} 
           initial="initial" 
-          animate="animate"
+          whileInView="animate"
+          viewport={{ once: true, margin: "-100px" }}
         >
           <SectionTitle variants={fadeInUp}>{content.about.title}</SectionTitle>
           {content.about.paragraphs.map((paragraph, index) => (
             <motion.p 
               key={index} 
               variants={fadeInUp}
-              style={{ marginTop: index > 0 ? '1rem' : 0 }}
+              style={{ 
+                marginTop: index > 0 ? '1.5rem' : 0,
+                color: 'rgba(255, 255, 255, 0.8)',
+                lineHeight: '1.8',
+                fontSize: '1.05rem'
+              }}
             >
               {paragraph}
             </motion.p>
@@ -655,22 +994,42 @@ function App() {
           id="profile" 
           variants={fadeInUp} 
           initial="initial" 
-          animate="animate"
+          whileInView="animate"
+          viewport={{ once: true, margin: "-100px" }}
         >
           <SectionTitle variants={fadeInUp}>{content.profile.title}</SectionTitle>
-          <motion.p variants={fadeInUp}>{content.profile.content}</motion.p>
+          <motion.p 
+            variants={fadeInUp}
+            style={{
+              color: 'rgba(255, 255, 255, 0.8)',
+              lineHeight: '1.8',
+              fontSize: '1.05rem'
+            }}
+          >
+            {content.profile.content}
+          </motion.p>
         </Section>
 
         <Section 
           id="experience" 
           variants={fadeInUp} 
           initial="initial" 
-          animate="animate"
+          whileInView="animate"
+          viewport={{ once: true, margin: "-100px" }}
         >
           <SectionTitle variants={fadeInUp}>{content.experience.title}</SectionTitle>
-          <ExperienceTimeline variants={staggerContainer} initial="initial" animate="animate">
+          <ExperienceTimeline 
+            variants={staggerContainer} 
+            initial="initial" 
+            whileInView="animate"
+            viewport={{ once: true, margin: "-100px" }}
+          >
             {content.experience.items.map((item, index) => (
-              <ExperienceItem key={index} variants={fadeInUp}>
+              <ExperienceItem 
+                key={index} 
+                variants={fadeInUp}
+                whileHover={{ scale: 1.01 }}
+              >
                 <h3>{item.title}</h3>
                 <div className="company">{item.company}</div>
                 <div className="date">{item.date}</div>
@@ -690,12 +1049,22 @@ function App() {
           id="skills" 
           variants={fadeInUp} 
           initial="initial" 
-          animate="animate"
+          whileInView="animate"
+          viewport={{ once: true, margin: "-100px" }}
         >
           <SectionTitle variants={fadeInUp}>{content.skills.title}</SectionTitle>
-          <SkillsGrid variants={staggerContainer} initial="initial" animate="animate">
+          <SkillsGrid 
+            variants={staggerContainer} 
+            initial="initial" 
+            whileInView="animate"
+            viewport={{ once: true, margin: "-100px" }}
+          >
             {content.skills.categories.map((category, index) => (
-              <SkillsCategory key={index} variants={fadeInUp}>
+              <SkillsCategory 
+                key={index} 
+                variants={fadeInUp}
+                whileHover={{ scale: 1.02 }}
+              >
                 <h4>{category.title}</h4>
                 <ul>
                   {category.items.map((item, i) => (
@@ -711,12 +1080,22 @@ function App() {
           id="languages" 
           variants={fadeInUp} 
           initial="initial" 
-          animate="animate"
+          whileInView="animate"
+          viewport={{ once: true, margin: "-100px" }}
         >
           <SectionTitle variants={fadeInUp}>{content.languages.title}</SectionTitle>
-          <LanguagesList variants={staggerContainer} initial="initial" animate="animate">
+          <LanguagesList 
+            variants={staggerContainer} 
+            initial="initial" 
+            whileInView="animate"
+            viewport={{ once: true, margin: "-100px" }}
+          >
             {content.languages.items.map((item, index) => (
-              <motion.div key={index} variants={fadeInUp}>
+              <motion.div 
+                key={index} 
+                variants={fadeInUp}
+                whileHover={{ scale: 1.05 }}
+              >
                 <strong>{item.name}</strong>
                 <span>({item.level})</span>
               </motion.div>
@@ -728,12 +1107,22 @@ function App() {
           id="education" 
           variants={fadeInUp} 
           initial="initial" 
-          animate="animate"
+          whileInView="animate"
+          viewport={{ once: true, margin: "-100px" }}
         >
           <SectionTitle variants={fadeInUp}>{content.education.title}</SectionTitle>
-          <ExperienceTimeline variants={staggerContainer} initial="initial" animate="animate">
+          <ExperienceTimeline 
+            variants={staggerContainer} 
+            initial="initial" 
+            whileInView="animate"
+            viewport={{ once: true, margin: "-100px" }}
+          >
             {content.education.items.map((item, index) => (
-              <ExperienceItem key={index} variants={fadeInUp}>
+              <ExperienceItem 
+                key={index} 
+                variants={fadeInUp}
+                whileHover={{ scale: 1.01 }}
+              >
                 <h3>{item.degree}</h3>
                 <div className="company">{item.institution}</div>
                 <div className="date">{item.date}</div>
@@ -742,7 +1131,12 @@ function App() {
           </ExperienceTimeline>
         </Section>
 
-        <Footer variants={fadeInUp} initial="initial" animate="animate">
+        <Footer 
+          variants={fadeInUp} 
+          initial="initial" 
+          whileInView="animate"
+          viewport={{ once: true }}
+        >
           <p>&copy; {new Date().getFullYear()} {content.personal.name}</p>
         </Footer>
       </Container>
