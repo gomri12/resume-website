@@ -143,7 +143,7 @@ const commands = {
   - ask [question]: Ask any question about my resume
   - exit: Close terminal`,
   
-  about: () => `Omri Glam - Engineering Group Manager
+  about: () => `Omri Glam - Group Manager (Director)
   Experienced tech leader with a passion for innovation
   and building high-performing engineering teams.`,
   
